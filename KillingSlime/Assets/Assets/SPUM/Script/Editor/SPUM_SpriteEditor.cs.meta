@@ -1,0 +1,25 @@
+fileFormatVersion: 2
+guid: d0987ae89950d394091fa78f348489ae
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 188715
+  packageName: 2D Pixel Unit Maker - SPUM
+  packageVersion: "\0.8.8\uD328\uD0A4\uC9C0\uC5EB\u1080\uB4DC\uC02E"
+  assetPath: Assets/SPUM/Script/Editor/SPUM_SpriteEditor.cs
+  uploadId: 892164
+AssetOrigin:
+  serializedVersion: 1
+  productId: 188715
+  packageName: 2D Pixel Unit Maker - SPUM
+  packageVersion: 1.8.9
+  assetPath: Assets/SPUM/Script/Editor/SPUM_SpriteEditor.cs
+  uploadId: 981060
