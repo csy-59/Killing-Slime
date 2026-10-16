@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Unity.AI.Navigation.LowLevel;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Managers : MonoBehaviour
@@ -45,25 +43,26 @@ public class Managers : MonoBehaviour
 
         var managers = transform.GetComponentsInChildren<ManagerBase>();
 
-        foreach(var m in managers)
+        AddManagersManually();
+
+        _gameSetting = GetManager<ResourcesManager>().
+            LoadData<GameSettingSO>(Defines.Defines.GameSettingSORoute);
+
+        foreach (var m in managers)
         {
             RegisterManager(m);
         }
-
-        AddManagersManually();
 
         foreach(var m in _managerDict)
         {
             m.Value.Initialize();
         }
-
-        _gameSetting = GetManager<ResourcesManager>().
-            LoadData<GameSettingSO>(Defines.Defines.GameSettingSORoute);
     }
 
     private void AddManagersManually()
     {
         RegisterManager(new ResourcesManager());
+        RegisterManager(new Database());
     }
 
     private void RegisterManager(ManagerBase manager)

@@ -3,7 +3,8 @@ using UnityEngine;
 
 public abstract class TickBasedManager
 {
-    private readonly int EVALUATION_TICK;
+    protected readonly int EVALUATION_TICK;
+
     private int _elapsedTick;
 
     public TickBasedManager(int tick)

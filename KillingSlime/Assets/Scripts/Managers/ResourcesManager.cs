@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class ResourcesManager : ManagerBase
 {
+
     private Dictionary<string, object> _cache;
 
     public void Initialize()
@@ -28,6 +30,28 @@ public class ResourcesManager : ManagerBase
         AddToCache(dataRoute, r);
 
         return r;
+    }
+
+    public T[] LoadAllData<T>(string dataRoute) where T : UnityEngine.Object
+    {
+        string cacheKey = $"ALL:{typeof(T).FullName}:{dataRoute}";
+
+        if (GetFromCache(cacheKey, out object cached))
+        {
+            return (T[])cached;
+        }
+
+        T[] result = Resources.LoadAll<T>(dataRoute);
+
+        if (result.Length == 0)
+        {
+            Debug.LogWarning(
+                $"[ResourcesManager] 해당 경로에 데이터 없음: {dataRoute}");
+        }
+
+        AddToCache(cacheKey, result);
+
+        return result;
     }
 
     private void AddToCache(string route, in object obj)

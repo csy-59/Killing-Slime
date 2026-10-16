@@ -6,10 +6,10 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "GameSettingSO", menuName = "Scriptable Objects/GameSettingSO")]
 public class GameSettingSO : ScriptableObject
 {
-    public readonly double FixedFrame = 0.05d;
-    public readonly int MaxTicksPerFrame = 5;
-    public readonly int MaxDelayTick = 10;
+    public double FixedFrame = 0.05d;
+    public int MaxTicksPerFrame = 5;
+    public int MaxDelayTick = 10;
 
-    public readonly int StatusEffectTick;
-    public readonly int MaxEffectCount;
+    public int StatusEffectTick = 4;
+    public int MaxEffectCount = 10;
 }

@@ -1,28 +1,33 @@
+using Effector;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class StatusEffectManager : TickBasedManager
 {
-    private struct EffectSet
+    private class EffectSet
     {
         public UnitStatusBase Target { get; }
         public StatusEffectBase Effect { get; }
         public int LeftTick { get; private set; }
 
-        public EffectSet(UnitStatusBase target, StatusEffectBase effect)
+        public EffectSet(UnitStatusBase target, StatusEffectBase effect, int durationTick)
         {
             Target = target;
             Effect = effect;
-            LeftTick = effect.Duration;
+            LeftTick = durationTick;
         }
 
         public void OnApply() => Effect.OnApply(Target);
-        public void OnUpdate()
+        public void OnUpdate(int deltaTick)
         {
-            --LeftTick;
+            LeftTick -= deltaTick;
             Effect.OnUpdate(Target);
         }
-        public void OnRemove() => Effect.OnRemove(Target);
+        public void OnRemove()
+        {
+            Effect.OnRemove(Target);
+        }
     }
 
     private List<EffectSet> _effectList;
@@ -32,21 +37,37 @@ public class StatusEffectManager : TickBasedManager
         _effectList = new(maxEffectCount);
     }
 
-    public void RegisterStatusEffect(UnitStatusBase target, StatusEffectBase effect)
+    public void RegisterStatusEffect(UnitStatusBase target, StatusEffectSO definition)
     {
-        if (effect.Duration <= 0)
+        if (target == null || definition == null)
+            return;
+
+        if (definition.DurationTick <= 0)
         {
-            Debug.Log($"[StatusEffectManager] (디)버프 값 이상. {effect.Duration}");
+            Debug.Log($"[StatusEffectManager] (디)버프 값 이상. {definition.DurationTick}");
             return; 
         }
 
-        _effectList.Add(new EffectSet(target, effect));
+        StatusEffectBase effect = definition.CreateRuntime();
+
+        EffectSet entry = new EffectSet(target, effect, definition.DurationTick);
         effect.OnApply(target);
+        _effectList.Add(entry);
     }
 
     public override void Evaluate()
     {
-        ApplyEffect();
+        for (int i = 0; i < _effectList.Count; ++i)
+        {
+            if (_effectList[i].Target == null ||
+                _effectList[i].LeftTick <= 0)
+            {
+                RemoveEffect(i); --i;
+                continue;
+            }
+
+            _effectList[i].OnUpdate(EVALUATION_TICK);
+        }
     }
 
     public void ClearTarget(UnitStatusBase unit)
@@ -58,21 +79,6 @@ public class StatusEffectManager : TickBasedManager
                 RemoveEffect(i);
                 --i;
             }
-        }
-    }
-
-    private void ApplyEffect()
-    {
-        for(int i = 0; i < _effectList.Count; ++i)
-        {
-            if (_effectList[i].Target == null ||
-                _effectList[i].LeftTick <= 0)
-            {
-                RemoveEffect(i); --i;
-                continue;
-            }
-
-            _effectList[i].OnUpdate();
         }
     }
 

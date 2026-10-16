@@ -10,6 +10,11 @@ namespace UnitDefines
         Death,
     }
 
-
+    public enum UnitStatusAdderType
+    {
+        Speed,
+        AttackSpeed,
+        AttackDamage,
+    }
 }
 

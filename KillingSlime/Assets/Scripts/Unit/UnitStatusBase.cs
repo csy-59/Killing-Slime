@@ -1,3 +1,5 @@
+using Effector;
+using Defines;
 using System.Collections.Generic;
 using UnitDefines;
 using UnityEngine;
@@ -9,8 +11,43 @@ public abstract class UnitStatusBase
 {
     public UnitState CurrentState { get; set; }
     public int CurrentHP { get; set; }
-    public int Speed { get; set; }
-    public int Defense { get; set; }
-    public int Damage { get; set; }
-    public float MoveSpeed { get; set; }
+    public int AttackID { get; set; }
+    public int UnitDataID { get; set; }
+
+    public UnitStatModifyManager Stats { get; } = new UnitStatModifyManager();
+
+    protected UnitStatusBase()
+    {
+        Stats.SetBase(StatType.AttackSpeed, 1f);
+    }
+
+    // 기존 Speed / Damage / Defense는 '기본값'으로 취급한다.
+    public float Speed
+    {
+        get => (int)Stats.GetBase(StatType.MoveSpeed);
+        set => Stats.SetBase(StatType.MoveSpeed, value);
+    }
+
+    public int Damage
+    {
+        get => (int)Stats.GetBase(StatType.AttackPower);
+        set => Stats.SetBase(StatType.AttackPower, value);
+    }
+
+    public int Defense
+    {
+        get => (int)Stats.GetBase(StatType.Defense);
+        set => Stats.SetBase(StatType.Defense, value);
+    }
+
+    public float BaseAttackSpeed
+    {
+        get => Stats.GetBase(StatType.AttackSpeed);
+        set => Stats.SetBase(StatType.AttackSpeed, value);
+    }
+
+    public float FinalSpeed => Stats.GetFinal(StatType.MoveSpeed);
+    public float FinalDamage => Stats.GetFinal(StatType.AttackPower);
+    public float FinalDefense => Stats.GetFinal(StatType.Defense);
+    public float FinalAttackSpeed => Stats.GetFinal(StatType.AttackSpeed);
 }

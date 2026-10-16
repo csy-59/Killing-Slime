@@ -28,7 +28,7 @@ namespace EnemyDefine
         Boss,
     }
 
-    [Serializable]
+    [CreateAssetMenu(fileName = "EnemyData", menuName = "Scriptable Objects/EnemyDataSO")]
     public class EnemyData : UnitData
     {
         public ClassType ClassType;

@@ -17,7 +17,12 @@ public abstract class UnitBrain
     {
         _state = state;
         _view = view;
-        view.Initialize();
+    }
+
+    public void Initialize()
+    {
+        _view.Initialize();
+        ResetFSMStates();
     }
 
     protected virtual void ResetFSMStates()

@@ -1,7 +1,11 @@
+using System.Reflection.Metadata.Ecma335;
 using UnityEngine;
 
 public class FSMManager
 {
+    private FSMState _prevState;
+    public FSMState PrevState;
+
     private FSMState _currentFSMState;
     public FSMState CurrentFSMState;
 
@@ -13,7 +17,14 @@ public class FSMManager
             return;
         }
 
+        if(isReenter)
+        {
+            CurrentFSMState?.Reenter();
+            return;
+        }
+
         CurrentFSMState?.Exit();
+        _prevState = CurrentFSMState;
 
         _currentFSMState = nextState;
         _currentFSMState.Enter();
