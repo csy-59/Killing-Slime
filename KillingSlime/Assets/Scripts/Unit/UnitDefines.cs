@@ -6,6 +6,7 @@ namespace UnitDefines
     {
         Idle,
         Battle,
+        OutofBattle, // 기절 등의 효과로 일시적으로 전투 불능 상태
         Death,
     }
 
