@@ -5,12 +5,12 @@ public abstract class StatusEffectBase
 {
     public StatusEffectType Type { get; }
     public float Value { get; }
-    public float Duration { get; }
+    public int Duration { get; }
 
     public StatusEffectBase(
         StatusEffectType type,
         float value,
-        float duration)
+        int duration)
     {
         Type = type;
         Value = value;

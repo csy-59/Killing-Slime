@@ -7,23 +7,27 @@ public class StatusEffectManager : TickBasedManager
     {
         public UnitStatusBase Target { get; }
         public StatusEffectBase Effect { get; }
-        public float ExpireAt { get; }
+        public int LeftTick { get; private set; }
 
         public EffectSet(UnitStatusBase target, StatusEffectBase effect)
         {
             Target = target;
             Effect = effect;
-            ExpireAt = TimeManager.ElapsedGameTime + effect.Duration;
+            LeftTick = effect.Duration;
         }
 
         public void OnApply() => Effect.OnApply(Target);
-        public void OnUpdate() => Effect.OnUpdate(Target);
+        public void OnUpdate()
+        {
+            --LeftTick;
+            Effect.OnUpdate(Target);
+        }
         public void OnRemove() => Effect.OnRemove(Target);
     }
 
     private List<EffectSet> _effectList;
     
-    public StatusEffectManager(float tick, int maxEffectCount) : base(tick)
+    public StatusEffectManager(int tick, int maxEffectCount) : base(tick)
     {
         _effectList = new(maxEffectCount);
     }
@@ -62,7 +66,7 @@ public class StatusEffectManager : TickBasedManager
         for(int i = 0; i < _effectList.Count; ++i)
         {
             if (_effectList[i].Target == null ||
-                _effectList[i].ExpireAt <= TimeManager.ElapsedGameTime)
+                _effectList[i].LeftTick <= 0)
             {
                 RemoveEffect(i); --i;
                 continue;

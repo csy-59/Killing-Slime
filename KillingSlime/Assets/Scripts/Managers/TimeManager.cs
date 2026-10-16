@@ -1,11 +1,18 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class TimeManager: MonoBehaviour, ManagerBase
 {
     private bool _isInitialized = false;
-    private static float _elapsedGameTime = 0f;
-    public static float ElapsedGameTime { get { return _elapsedGameTime; } }
+
+    private double SecondPerTick => Managers.Instance.GameSetting.FixedFrame;
+    private int MaxTicksPerFrame => Managers.Instance.GameSetting.MaxTicksPerFrame;
+
+    private double _startTime;
+    private long _tickCount;
+    public long CurrentTick { get { return _tickCount; } }
+    private long _delayedTick;
 
     private List<TickBasedManager> _tickBasedManagers = new();
 
@@ -16,29 +23,58 @@ public class TimeManager: MonoBehaviour, ManagerBase
 
         _isInitialized = true;
 
+        _startTime = Time.timeAsDouble;
+        gameObject.SetActive(true);
         AddTickBasedManager();
     }
 
     private void AddTickBasedManager()
     {
-        _tickBasedManagers.Add(
-            new StatusEffectManager(
-                Managers.Instance.GameSetting.StatusEffectTick,
-                Managers.Instance.GameSetting.MaxEffectCount));
+        try
+        {
+            _tickBasedManagers.Add(
+                new StatusEffectManager(
+                    Managers.Instance.GameSetting.StatusEffectTick,
+                    Managers.Instance.GameSetting.MaxEffectCount));
+        }
+        catch (ArgumentOutOfRangeException e)
+        {
+            _isInitialized = false;
+            gameObject.SetActive(false);
+        }
     }
 
     private void Update()
     {
-        _elapsedGameTime += Time.deltaTime;
+        if (_isInitialized == false)
+            return;
 
-        foreach(var m in _tickBasedManagers)
+        double elapsed = Time.timeAsDouble - _startTime;
+
+        long targetTick = (long)Math.Floor(
+            elapsed / SecondPerTick);
+
+        long pendingTick = Math.Max(0L, targetTick - _tickCount);
+
+        int processCount = (int)Math.Min(
+            pendingTick, MaxTicksPerFrame);
+
+        for (int i = 0; i < processCount; ++i)
         {
-            int count = m.GetEvaluationCount(Time.deltaTime);
-            for(int i = 0; i < count; ++i)
+            ++_tickCount;
+
+            foreach (var manager in _tickBasedManagers)
             {
-                m.Evaluate();
+                int count = manager.GetEvaluationCount(1);
+
+                for (int j = 0; j < count; ++j)
+                {
+                    manager.Evaluate();
+                }
             }
         }
+
+        _delayedTick = Math.Max(0L, targetTick - _tickCount);
     }
 
 }
