@@ -17,7 +17,7 @@ public abstract class StatusEffectBase
         Duration = duration;
     }
 
-    public abstract void OnApply(UnitBase unit);
-    public virtual void OnUpdate(UnitBase unit) { }
-    public abstract void OnRemove(UnitBase unit);
+    public abstract void OnApply(UnitStatusBase unit);
+    public virtual void OnUpdate(UnitStatusBase unit) { }
+    public abstract void OnRemove(UnitStatusBase unit);
 }

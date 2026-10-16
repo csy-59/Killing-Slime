@@ -5,11 +5,11 @@ public class StatusEffectManager : TickBasedManager
 {
     private struct EffectSet
     {
-        public UnitBase Target { get; }
+        public UnitStatusBase Target { get; }
         public StatusEffectBase Effect { get; }
         public float ExpireAt { get; }
 
-        public EffectSet(UnitBase target, StatusEffectBase effect)
+        public EffectSet(UnitStatusBase target, StatusEffectBase effect)
         {
             Target = target;
             Effect = effect;
@@ -28,7 +28,7 @@ public class StatusEffectManager : TickBasedManager
         _effectList = new(maxEffectCount);
     }
 
-    public void RegisterStatusEffect(UnitBase target, StatusEffectBase effect)
+    public void RegisterStatusEffect(UnitStatusBase target, StatusEffectBase effect)
     {
         if (effect.Duration <= 0)
         {
@@ -45,7 +45,7 @@ public class StatusEffectManager : TickBasedManager
         ApplyEffect();
     }
 
-    public void ClearTarget(UnitBase unit)
+    public void ClearTarget(UnitStatusBase unit)
     {
         for(int i = 0; i < _effectList.Count; ++i)
         {

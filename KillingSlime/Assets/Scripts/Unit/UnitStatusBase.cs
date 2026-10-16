@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// 각 유닛(플레이어, 에너미)에 대한 상태 및 현재 상태
 /// </summary>
-public abstract class UnitBase
+public abstract class UnitStatusBase
 {
     public UnitState CurrentState { get; set; }
     public int CurrentHP { get; set; }

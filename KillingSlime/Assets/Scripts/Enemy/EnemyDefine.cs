@@ -8,6 +8,14 @@ namespace EnemyDefine
         public const string EnemyDataSetRoute = "Data/EnemyDataSetSO";
     }
 
+    public enum EnemyState
+    {
+        Idle,
+        Chase,
+        Attack,
+        Death,
+    }
+
     public enum AttackType
     {
         Range,
@@ -26,5 +34,4 @@ namespace EnemyDefine
         public ClassType ClassType;
         public AttackType AttackType;
     }
-
 }
