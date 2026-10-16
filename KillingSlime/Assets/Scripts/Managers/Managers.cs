@@ -56,7 +56,7 @@ public class Managers : MonoBehaviour
 
     private void AddManagersManually()
     {
-        // 여기에는 그냥 class 추가
+        RegisterManager(new ResourcesManager());
     }
 
     private void RegisterManager(ManagerBase manager)

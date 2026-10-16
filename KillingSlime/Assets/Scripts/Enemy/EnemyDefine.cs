@@ -3,6 +3,11 @@ using UnityEngine;
 
 namespace EnemyDefine
 {
+    public class EnemyDefines
+    {
+        public const string EnemyDataSetRoute = "Data/EnemyDataSetSO";
+    }
+
     public enum AttackType
     {
         Range,
@@ -19,6 +24,8 @@ namespace EnemyDefine
     public class EnemyData
     {
         public int DataID;
+        public ClassType ClassType;
+        public AttackType AttackType;
         public int HP;
         public int Damage;
         public float MoveSpeed;
