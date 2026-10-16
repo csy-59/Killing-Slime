@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class Managers : MonoBehaviour
 {
+    #region Singleton
     private static Managers _instance;
     public static Managers Instance
     {
@@ -24,7 +25,10 @@ public class Managers : MonoBehaviour
             return _instance;
         }
     }
+    #endregion
 
+    private GameSettingSO _gameSetting;
+    public GameSettingSO GameSetting { get => _gameSetting; }
     private Dictionary<Type, ManagerBase> _managerDict;
 
     public T GetManager<T>() where T : class, ManagerBase
@@ -52,6 +56,9 @@ public class Managers : MonoBehaviour
         {
             m.Value.Initialize();
         }
+
+        _gameSetting = GetManager<ResourcesManager>().
+            LoadData<GameSettingSO>(Defines.Defines.GameSettingSORoute);
     }
 
     private void AddManagersManually()

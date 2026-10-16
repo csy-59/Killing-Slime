@@ -21,15 +21,10 @@ namespace EnemyDefine
     }
 
     [Serializable]
-    public class EnemyData
+    public class EnemyData : UnitData
     {
-        public int DataID;
         public ClassType ClassType;
         public AttackType AttackType;
-        public int HP;
-        public int Damage;
-        public float MoveSpeed;
-        public float AttackCoolTime;
     }
 
 }
