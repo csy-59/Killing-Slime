@@ -13,14 +13,20 @@ public class StatModifierEffect : StatusEffectBase
         _multiplier = multiplier;
     }
 
-    public override void OnApply(UnitStatusBase unit)
+    public override bool TryApply(IEffectable target)
     {
+        if ((target is IStatModifiable) == false ||
+            (target as IStatModifiable).SupportStat(_stat))
+            return false;
+
         _modifierHandle =
-            unit.Stats.AddMultiplier(_stat, _multiplier);
+            (target as IStatModifiable).AddMultiplier(_stat, _multiplier);
+
+        return _modifierHandle > -1;
     }
 
-    public override void OnRemove(UnitStatusBase unit)
+    public override void OnRemove(IEffectable target)
     {
-        unit.Stats.RemoveModifier(_modifierHandle);
+        (target as IStatModifiable).RemoveModifier(_modifierHandle);
     }
 }

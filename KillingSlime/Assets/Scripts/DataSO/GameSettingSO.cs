@@ -12,4 +12,8 @@ public class GameSettingSO : ScriptableObject
 
     public int StatusEffectTick = 4;
     public int MaxEffectCount = 10;
+
+    public int BattleTick = 2;
+    public int MaxEnemyCount = 100;
+    public int EnemyGroupCount = 5;
 }

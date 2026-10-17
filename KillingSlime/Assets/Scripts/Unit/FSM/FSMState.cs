@@ -9,7 +9,6 @@ public abstract class FSMState
         _manager = manager;
     }
 
-
     public virtual void Enter() { }
     public virtual void Reenter() { }
     public virtual void Tick(float deltaTime) { }

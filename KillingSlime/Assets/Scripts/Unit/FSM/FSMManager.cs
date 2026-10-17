@@ -30,8 +30,8 @@ public class FSMManager
         _currentFSMState.Enter();
     }
 
-    public void Tick(float deltaTime)
+    public void Tick(int deltaTick)
     {
-        _currentFSMState?.Tick(deltaTime);
+        _currentFSMState?.Tick(deltaTick);
     }
 }

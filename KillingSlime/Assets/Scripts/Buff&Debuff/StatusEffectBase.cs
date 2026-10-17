@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class StatusEffectBase
 {
-    public abstract void OnApply(UnitStatusBase unit);
-    public virtual void OnUpdate(UnitStatusBase unit) { }
-    public abstract void OnRemove(UnitStatusBase unit);
+    public abstract bool TryApply(IEffectable unit);
+    public virtual void OnUpdate(IEffectable unit) { }
+    public abstract void OnRemove(IEffectable unit);
 }

@@ -6,6 +6,9 @@ using UnityEngine;
 
 public class Database : ManagerBase
 {
+    public static T GetData<T>(int id) where T : Data
+        => Managers.Instance.GetManager<Database>().GetData<T>(id, true);
+
     private readonly Dictionary<Type, IDataSet> _database = new();
 
     public void Initialize()
@@ -39,7 +42,7 @@ public class Database : ManagerBase
         return null;
     }
 
-    public T GetData<T>(int id) where T : Data
+    public T GetData<T>(int id, bool isStatic = false) where T : Data
     {
         return GetDataSet<T>()?.GetData(id);
     }

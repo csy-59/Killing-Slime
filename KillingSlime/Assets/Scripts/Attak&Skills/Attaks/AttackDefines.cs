@@ -17,17 +17,20 @@ public enum EffectTarget
 
 public readonly struct AttackContext
 {
-    public readonly UnitStatusBase Attacker;
-    public readonly UnitStatusBase Target;
+    public readonly UnitController Attacker;
+    public readonly IDamageable Target;
+    public readonly IEffectable EffectTarget;
     public readonly ICombatActions Actions;
 
     public AttackContext(
-        UnitStatusBase attacker,
-        UnitStatusBase target,
+        UnitController attacker,
+        IDamageable target,
+        IEffectable effectTarget,
         ICombatActions actions)
     {
         Attacker = attacker;
         Target = target;
+        EffectTarget = effectTarget;
         Actions = actions;
     }
 }

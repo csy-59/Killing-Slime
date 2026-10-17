@@ -2,26 +2,24 @@ using System.Collections.Generic;
 using UnitDefines;
 using UnityEngine;
 
-public abstract class UnitBrain
+public class UnitBrain
 {
-    protected UnitStatusBase _state;
-    protected UnitView _view;
+    protected UnitController _controller;
 
+    protected UnitController _target;
 
     #region FSM
     protected FSMManager _fsmManager;
     protected List<FSMState> _fsmList;
     #endregion
 
-    public UnitBrain(UnitStatusBase state, UnitView view)
+    public UnitBrain(UnitController controller)
     {
-        _state = state;
-        _view = view;
+        _controller = controller;
     }
 
     public void Initialize()
     {
-        _view.Initialize();
         ResetFSMStates();
     }
 
@@ -31,13 +29,18 @@ public abstract class UnitBrain
         _fsmManager = new FSMManager();
     }
 
-    public virtual void Think(float deltaTime)
+    public virtual void Think(int deltaTick)
     {
-        FSMTick(deltaTime);
+        FSMTick(deltaTick);
     }
 
-    protected virtual void FSMTick(float deltaTime)
+    protected virtual void FSMTick(int deltaTick)
     {
-        _fsmManager.Tick(deltaTime);
+        _fsmManager.Tick(deltaTick);
+    }
+
+    public void SetTarget(UnitController target)
+    {
+
     }
 }

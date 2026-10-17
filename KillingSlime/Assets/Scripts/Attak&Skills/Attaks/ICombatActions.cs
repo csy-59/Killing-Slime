@@ -4,12 +4,12 @@ public interface ICombatActions
 {
     // 피해 적용
     void DealDamage(
-        UnitStatusBase attacker,
-        UnitStatusBase target,
+        UnitController attacker,
+        IDamageable target,
         float damageMultiplier);
 
     // 상태이상 적용
     void ApplyStatusEffect(
-        UnitStatusBase target,
+        IEffectable target,
         StatusEffectSO effect);
 }

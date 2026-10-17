@@ -7,18 +7,18 @@ public class StatusEffectManager : TickBasedManager
 {
     private class EffectSet
     {
-        public UnitStatusBase Target { get; }
+        public IEffectable Target { get; }
         public StatusEffectBase Effect { get; }
         public int LeftTick { get; private set; }
 
-        public EffectSet(UnitStatusBase target, StatusEffectBase effect, int durationTick)
+        public EffectSet(IEffectable target, StatusEffectBase effect, int durationTick)
         {
             Target = target;
             Effect = effect;
             LeftTick = durationTick;
         }
 
-        public void OnApply() => Effect.OnApply(Target);
+        public bool OnApply() => Effect.TryApply(Target);
         public void OnUpdate(int deltaTick)
         {
             LeftTick -= deltaTick;
@@ -37,7 +37,7 @@ public class StatusEffectManager : TickBasedManager
         _effectList = new(maxEffectCount);
     }
 
-    public void RegisterStatusEffect(UnitStatusBase target, StatusEffectSO definition)
+    public void RegisterStatusEffect(IEffectable target, StatusEffectSO definition)
     {
         if (target == null || definition == null)
             return;
@@ -51,7 +51,8 @@ public class StatusEffectManager : TickBasedManager
         StatusEffectBase effect = definition.CreateRuntime();
 
         EffectSet entry = new EffectSet(target, effect, definition.DurationTick);
-        effect.OnApply(target);
+        if (effect.TryApply(target) == false)
+            return;
         _effectList.Add(entry);
     }
 
@@ -70,7 +71,7 @@ public class StatusEffectManager : TickBasedManager
         }
     }
 
-    public void ClearTarget(UnitStatusBase unit)
+    public void ClearTarget(IEffectable unit)
     {
         for(int i = 0; i < _effectList.Count; ++i)
         {

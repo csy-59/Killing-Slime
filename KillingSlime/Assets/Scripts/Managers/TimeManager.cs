@@ -36,6 +36,12 @@ public class TimeManager: MonoBehaviour, ManagerBase
                 new StatusEffectManager(
                     Managers.Instance.GameSetting.StatusEffectTick,
                     Managers.Instance.GameSetting.MaxEffectCount));
+
+            _tickBasedManagers.Add(
+                new BattleManager(
+                    Managers.Instance.GameSetting.BattleTick,
+                    Managers.Instance.GameSetting.MaxEnemyCount,
+                    Managers.Instance.GameSetting.EnemyGroupCount));
         }
         catch (ArgumentOutOfRangeException e)
         {

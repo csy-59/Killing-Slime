@@ -12,4 +12,8 @@ public abstract class UnitData: Data
     public int Defense;
     public int Damage;
     public float MoveSpeed;
+    public float AttackSpeed;
+    public float SightRange;
+    public int AttackID;
+    public GameObject Model;
 }
